@@ -8,7 +8,7 @@
 </head>
 <body>
   
-  <div class="container mt-5 rounded" style="background-color: #F5E9E9; width: 500px;px; height: 500px;">
+  <div class="container mt-5 rounded" style="background-color: #F5E9E9; width: 500px; height: 500px;">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="mt-4">
@@ -30,7 +30,7 @@
           <button type="submit" class="btn btn-primary" style="background-color: #007bff;">Register</button>
         </form>
         
-        <p style="font-size: smaller;text-align: center;" class="mt-4">Already have an account? <a href="#">Login</a></p>
+        <p style="font-size: smaller;text-align: center;" class="mt-4">Already have an account? <a href="login.php">Login</a></p>
          </div>
        </div>
   </div>

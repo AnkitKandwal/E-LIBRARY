@@ -41,8 +41,11 @@
                 </form>
             </div>
         </div>
-        <h1 class="" style="font-size: 12px;text-align: center;">Forget password,<a href="">Click here to reset</a></h1>
-        <h1 class="mt-2" style="font-size: 12px;text-align-last: center;">Click Here to <a href="" class="text-center" style="font-size: 12px;">Register</a></h1>
+        <div class="mt-4">
+            <h1 class="" style="font-size: 12px;text-align: center;">Forget password,<a href="">Click here to reset</a></h1>
+            <h1 class="mt-2" style="font-size: 12px;text-align-last: center;">Click Here to <a href="" class="text-center" style="font-size: 12px;">Register</a></h1>
+
+        </div>
     </div>
     </div>
 </body>
