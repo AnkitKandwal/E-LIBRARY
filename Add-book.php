@@ -1,18 +1,25 @@
- <?php
+<?php
     include 'connection.php';
     if (isset($_POST['submit'])) {
-        $bookname = $_POST['bookname'];
-        $authorname = $_POST['authorname'];
-        $description = $_POST['description'];
+        $bookname = mysqli_real_escape_string($con, $_POST['bookname']);
+        $authorname = mysqli_real_escape_string($con, $_POST['authorname']);
+        $description = mysqli_real_escape_string($con, $_POST['description']);
         $image = $_FILES['image']['name'];
         $tempname = $_FILES['image']['tmp_name'];
-        move_uploaded_file($tempname,'./images/'.$image);
+        move_uploaded_file($tempname, './images/' . $image);
 
-        $query = "Insert into add_book(book_name,author_name,description,book_img) values('$bookname','$authorname','$description','$image')";
+        $query = "INSERT INTO add_book (book_name, author_name, description, book_img) VALUES ('$bookname', '$authorname', '$description', '$image')";
         $result = mysqli_query($con, $query);
-    }
 
-    ?>
+        if ($result) {
+            header("Location: booklisting.php");
+            exit;
+        } else {
+            echo "Failed to update data.";
+        }
+    }
+?>
+
 
  <!DOCTYPE html>
  <html lang="en">
@@ -25,7 +32,7 @@
  </head>
 
  <body>
-     <nav class="navbar navbar-expand-lg bg-light">
+     <nav class="navbar navbar-expand-lg bg-info">
          <div class="container-fluid">
              <a class="navbar-brand" href="#">E-library</a>
              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,28 +54,29 @@
              <div class=" card mt-2 rounded form-control" style="background-color: rgb(227, 217, 217);">
                  <div class="d-flex align-items-center justify-content-center">
                      <div class="Book image col-6 p-4">
-                         <input type="file" name="image" class="form-control">
+                         <input type="file" name="image" class="form-control" required>
                      </div>
                      <div class="book detail form-group col-6 p-4">
                          <div>
                              <label for=""> Book Name</label><br>
-                             <input type="text" class="form-control mb-3" name="bookname" id="" placeholder="Enter a book name">
+                             <input type="text" class="form-control mb-3" name="bookname" id="" placeholder="Enter a book name" required>
                          </div>
                          <div>
                              <label for=""> Author Name</label><br>
-                             <input type="text" class="form-control mb-3" name="authorname" id="" placeholder="Enter a author name">
+                             <input type="text" class="form-control mb-3" name="authorname" id="" placeholder="Enter a author name" required>
                          </div>
                          <div>
-                            
-                         <div>
-                            <label for="">Description</label>
-                            <textarea class="form-control" id="description" name="description" cols="5" rows="5" required></textarea>
 
-                             <button class="btn btn-primary mt-1" name="submit">Submit</button>
+                             <div>
+                                 <label for="">Description</label>
+                                 <textarea class="form-control" id="description" name="description" cols="12" rows="12" required></textarea>
+
+                                 <button class="btn btn-primary mt-1" name="submit">Submit</button>
+
+                             </div>
                          </div>
                      </div>
                  </div>
-             </div>
          </form>
      </div>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

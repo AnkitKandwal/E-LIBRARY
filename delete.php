@@ -1,16 +1,27 @@
 <?php
 include 'connection.php';
 
-$id = $_GET['id'];
+// Check if the book ID is provided in the URL
+if (isset($_GET['id'])) {
+    $bookId = $_GET['id'];
 
-// Add mysqli_real_escape_string to sanitize the input
-$id = mysqli_real_escape_string($con, $id);
+    // Sanitize the book ID to prevent SQL injection
+    $bookId = mysqli_real_escape_string($con, $bookId);
 
-$query = "DELETE FROM add_book WHERE id='$id'";
-$result = mysqli_query($con, $query);
+    // Delete the book from the database
+    $query = "DELETE FROM add_book WHERE id = '$bookId'";
+    $result = mysqli_query($con, $query);
 
-if ($result) {
-    header("Location: booklisting.php");
-    exit();
+    if ($result) {
+        // Redirect back to the book listing page after successful deletion
+        header("Location: booklisting.php");
+        exit();
+    } else {
+        // Handle the deletion error appropriately
+        echo "Error deleting book: " . mysqli_error($con);
+    }
 }
 ?>
+
+
+

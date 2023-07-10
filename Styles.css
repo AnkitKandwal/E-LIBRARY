@@ -6,3 +6,6 @@
     transform: scale(1.2);
   }
   
+.card-title{
+    word-wrap: break-word;
+}
