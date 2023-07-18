@@ -14,8 +14,6 @@ if (isset($_GET['logout'])) {
     }
 }
 
-// Rest of your code...
-
 session_unset();
 header("location:login.php");
 session_destroy();

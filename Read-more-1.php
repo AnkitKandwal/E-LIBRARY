@@ -1,5 +1,6 @@
 <?php
 include 'connection.php';
+include 'login-session.php';
 $newid = $_GET['book_id'];
 $query = "SELECT * FROM add_book where id = '$newid'";
 $result = mysqli_query($con, $query);
@@ -40,12 +41,15 @@ if (mysqli_num_rows($result) > 0) {
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mt-2 mb-lg-0 float-end">
-                    <li class="nav-item">
+              
+                <?php if($_SESSION['user_type'] == 'admin'){ ?>
+               <li class="nav-item">
                         <a href="Edit.php?id=<?php echo $row['id']; ?>" class="btn btn-success">Edit</a>
                     </li>
                     <li>
                         <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn ms-2 text-white" style="background-color: red;">Delete</a>
                     </li>
+               <?php } ?>
                 </ul>
             </div>
         </div>

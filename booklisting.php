@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php session_start(); 
+echo "welcome".$_SESSION['username'];
+echo "welcome".$_SESSION['user_type'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,15 +37,21 @@
                             <?php endif; ?>
                         </form>
                     </li>
-                    <li class="nav-item">
+                    <?php
+                    if($_SESSION['user_type'] == 'admin'){
+                    echo
+                   '<li class="nav-item">
                         <a href="Add-book.php">
                             <button class="btn mx-2 text-white" style="background-color:green;">Add Book</button>
                         </a>
-                    </li>
+                    </li>';}
+                ?>
+                       
                     <li class="nav-item">
                     <a href="logout.php?logout=true">
                     <button class="btn text-white" style="background-color:red;">Logout</button>
                     </a>
+                </li>
                 </ul>
             </div>
         </div>
@@ -53,6 +62,18 @@
         <?php
         include 'connection.php';
 
+        $username = $_SESSION['username'];
+
+        if ($username == true)
+        
+        {
+            
+           
+        } 
+        else {
+            header('location:login.php');
+        }
+        
         $booksPerPage = 10;
 
         if (isset($_GET['query'])) {
@@ -114,7 +135,7 @@
         $totalPages = ceil($totalBooks / $booksPerPage);
 
        
-        echo '<div class="d-flex justify-content-center fixed-bottom py-5">';
+        echo '<div class="d-flex justify-content-center py-5">';
         echo '<ul class="pagination">';
 
         if ($currentPage > 1) {

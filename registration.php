@@ -8,6 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $username = $_POST["username"];
     $password = isset($_POST["password"]) ? $_POST["password"] : "";
+    $email = $_POST["email"];
+
+
 
     $existSql = "SELECT * FROM users WHERE username = '$username'";
     $result = mysqli_query($con, $existSql);
@@ -16,13 +19,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $showError = "Username already exists";
     } else {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (username, password) VALUES ('$username', '$hash')";
+        $vcode = bin2hex(random_bytes(10));
+        $sql = "INSERT INTO users (username, password, email, verification_code, is_verified) VALUES ('$username', '$hash', '$email', '$vcode', '0')";
         $result = mysqli_query($con, $sql);
-
-        if ($result) {
+        if ($result && sendMail($_POST['email'], $vcode)) {
             $showAlert = true;
         } else {
-            $showError = "Password does not match";
+            $showError = "Invalid credential";
         }
     }
 }
@@ -42,23 +45,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <?php
 
-if($showAlert){
-    echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
+    if ($showAlert) {
+        echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Success!</strong> Your account is now created and you can login
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div> ';
-}
+    }
 
-if($showError){
-    echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Error!</strong> '. $showError.'
+    if ($showError) {
+        echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> ' . $showError . '
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div> ';
-}
+    }
 
     ?>
 
@@ -74,10 +77,13 @@ if($showError){
                         <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
                     </div>
                     <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
                     </div>
-
                     <button type="submit" class="btn btn-primary" style="background-color: #007bff;">Register</button>
                 </form>
 

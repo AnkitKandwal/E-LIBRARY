@@ -1,4 +1,5 @@
 <?php
+include"login-session.php";
 include 'connection.php';
 
 if (isset($_GET['id'])) {
