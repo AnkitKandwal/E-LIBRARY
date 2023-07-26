@@ -1,33 +1,60 @@
 <?php
+include 'connection.php';
 
+use PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
+require '../E-LIBRARY/vendor/autoload.php';
 $showAlert = false;
 $showError = false;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    include 'connection.php';
-
     $username = $_POST["username"];
     $password = isset($_POST["password"]) ? $_POST["password"] : "";
     $email = $_POST["email"];
-
-
-
-    $existSql = "SELECT * FROM users WHERE username = '$username'";
-    $result = mysqli_query($con, $existSql);
-    $numExistRows = mysqli_num_rows($result);
-    if ($numExistRows > 0) {
+    
+    $mail = new PHPMailer(true);
+    
+    $mail->SMTPDebug = 0; //SMTP::DEBUG_SERVER;
+    
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'krishna.kandwal98@gmail.com';
+    $mail->Password   = 'tjrcgokullasuaoi';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Port       = 465;
+    $mail->setFrom('krishna.kandwal98@gmail.com', 'ANKIT');
+    $mail->addAddress($email);
+    $mail->isHTML(true);
+    
+    $verify_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
+    date_default_timezone_set('Asia/kolkata');
+    $expiry_date = date("Y-m-d H:i:s", strtotime('+60 minutes'));
+    
+    $mail->Subject = 'Email verification from ANKIT';
+    $mail->Body    = '<p>Your verification code is: <b style="font-size: 30px;">' . $email . '&verify_code=' . $verify_code . '</b></p>';
+    
+    
+    $mail->send();
+    
+  
+    $Sql = "SELECT * FROM users WHERE username = '$username'";
+    $result = mysqli_query($con, $Sql);
+    
+    if (mysqli_num_rows($result) > 0) {
         $showError = "Username already exists";
     } else {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $vcode = bin2hex(random_bytes(10));
-        $sql = "INSERT INTO users (username, password, email, verification_code, is_verified) VALUES ('$username', '$hash', '$email', '$vcode', '0')";
+        $sql = "INSERT INTO users (username, password, email, verification_code, is_verified) VALUES ('$username', '$hash', '$email', '$verify_code', '0')";
         $result = mysqli_query($con, $sql);
-        if ($result && sendMail($_POST['email'], $vcode)) {
-            $showAlert = true;
-        } else {
-            $showError = "Invalid credential";
-        }
     }
+    
+    if($result){
+        header("Location: verify.php?email=$email");
+    }
+  
+    
 }
 
 ?>

@@ -1,6 +1,5 @@
-<?php session_start(); 
-echo "welcome".$_SESSION['username'];
-echo "welcome".$_SESSION['user_type'];
+<?php 
+include 'login-session.php' ;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +29,7 @@ echo "welcome".$_SESSION['user_type'];
                                 <option value="asc">A-Z</option>
                                 <option value="desc">Z-A</option>
                             </select>
-                            <input class="form-control" style="margin-right: 2px;" type="search" placeholder="Search" aria-label="Search" name="query">
+                            <input class="form-control" style="" type="search" placeholder="Search" aria-label="Search" name="query">
                             <button class="btn btn-dark btn-sm my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
                             <?php if (isset($_GET['query'])) : ?>
                                 <a href="booklisting.php" class="btn btn-sm btn-secondary ml-2">Reset</a>
@@ -49,7 +48,7 @@ echo "welcome".$_SESSION['user_type'];
                        
                     <li class="nav-item">
                     <a href="logout.php?logout=true">
-                    <button class="btn text-white" style="background-color:red;">Logout</button>
+                    <button class="btn text-white mx-1" style="background-color:red;">Logout</button>
                     </a>
                 </li>
                 </ul>
@@ -61,19 +60,6 @@ echo "welcome".$_SESSION['user_type'];
     <div class="container justify-content-center" style="display: flex;flex-wrap: wrap;">
         <?php
         include 'connection.php';
-
-        $username = $_SESSION['username'];
-
-        if ($username == true)
-        
-        {
-            
-           
-        } 
-        else {
-            header('location:login.php');
-        }
-        
         $booksPerPage = 10;
 
         if (isset($_GET['query'])) {
