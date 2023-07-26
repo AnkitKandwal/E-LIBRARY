@@ -86,7 +86,6 @@ if (isset($_POST['send-reset-link'])) {
 </head>
 
 <body>
-    <h1>forgot-password</h1>
     <div class="container mt-5 rounded" style="background-color: #F5E9E9; width: 500px; height: 300px;">
         <div class="row justify-content-center">
             <div class="col-md-6">
