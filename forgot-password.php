@@ -17,7 +17,7 @@ function sendMail($con, $email, $reset_token)
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'krishna.kandwal98@gmail.com';
-        $mail->Password = 'tjrcgokullasuaoi';
+        $mail->Password = '';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
         $mail->setFrom('krishna.kandwal98@gmail.com', 'ANKIT');
