@@ -1,6 +1,4 @@
-<?php
-include 'login-session.php';
-?>
+<?php include"login-session.php";?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +30,6 @@ include 'login-session.php';
 <body>
     <?php
     include 'connection.php';
-   
 
     $query = "SELECT * FROM add_book";
     $data  = mysqli_query($con, $query);

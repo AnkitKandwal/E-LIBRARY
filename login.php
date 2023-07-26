@@ -71,9 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="mt-4">
             <h1 class="mt-2" style="font-size: 12px;text-align-last: center;">Click Here to <a href="registration.php" class="text-center" style="font-size: 12px;">Register</a></h1>
         </div>
-        <div class="forgot-btn" style="text-align: center;">
-           <a href="forgot-password.php">Forgot Password?</a><hr>
-        </div>
 
         <?php if ($showError) : ?>
             <div id="error-msg" class="alert alert-danger alert-dismissible text-center" role="alert">
