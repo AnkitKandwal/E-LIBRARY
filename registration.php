@@ -65,6 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     ?>
 
+<h1>registration Page</h1>
     <div class="container mt-5 rounded" style="background-color: #F5E9E9; width: 500px; height: 500px;">
         <div class="row justify-content-center">
             <div class="col-md-6">
