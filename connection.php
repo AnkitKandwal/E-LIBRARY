@@ -1,4 +1,3 @@
-
 <?php
 $server = 'localhost';
 $user = 'root';
@@ -7,8 +6,8 @@ $dbname = 'elibrary';
 
 $con = mysqli_connect($server, $user, $password, $dbname);
 
-if (mysqli_connect_errno()) {
-    echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    exit();
+
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error());
 }
 ?>

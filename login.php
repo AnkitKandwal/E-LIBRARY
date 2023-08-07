@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usertype = $_POST["user_type"];
     $password = isset($_POST["password"]) ? $_POST["password"] : "";
 
-    $sql = "SELECT * FROM users WHERE username = '$username'";
+    $sql = "SELECT * FROM users WHERE username = '$username' && is_verified = 1";
     $result = mysqli_query($con, $sql);
 
     if ($result && mysqli_num_rows($result) == 1) {
@@ -70,6 +70,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <div class="mt-4">
             <h1 class="mt-2" style="font-size: 12px;text-align-last: center;">Click Here to <a href="registration.php" class="text-center" style="font-size: 12px;">Register</a></h1>
+        </div>
+        <div style="text-align:center">
+            <a href="forgot-password.php">Forgot Password</a>
         </div>
 
         <?php if ($showError) : ?>

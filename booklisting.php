@@ -1,6 +1,7 @@
-<?php session_start(); 
-echo "welcome".$_SESSION['username'];
-echo "welcome".$_SESSION['user_type'];
+<?php 
+
+include 'login-session.php'; 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

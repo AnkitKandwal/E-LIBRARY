@@ -1,4 +1,5 @@
 <?php
+
 include 'connection.php';
 
 use PHPMailer\PHPMailer\Exception;
@@ -7,7 +8,7 @@ use PHPMailer\PHPMailer\SMTP;
 
 require '../E-LIBRARY/vendor/autoload.php';
 
-function sendMail($con, $email, $reset_token)
+function sendMail($con, $email)
 {
     try {
         $mail = new PHPMailer(true);
@@ -17,21 +18,26 @@ function sendMail($con, $email, $reset_token)
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'krishna.kandwal98@gmail.com';
-        $mail->Password = '';
+        $mail->Password = 'tjrcgokullasuaoi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
         $mail->setFrom('krishna.kandwal98@gmail.com', 'ANKIT');
         $mail->addAddress($email);
         $mail->isHTML(true);
 
+        // Generate a new reset token and update it in the database
         $reset_token = bin2hex(random_bytes(32));
         date_default_timezone_set('Asia/Kolkata');
         $date = date("Y-m-d H:i:s");
-        $query = "UPDATE `users` SET `resettoken`='$reset_token', `resettokenexpire`='$date' WHERE `email`='$email'";
-        if (mysqli_query($con, $query)) {
+        $query = "UPDATE `users` SET `resettoken`=?, `resettokenexpire`=? WHERE `email`=?";
+        $stmt = mysqli_prepare($con, $query);
+        mysqli_stmt_bind_param($stmt, "sss", $reset_token, $date, $email);
+
+        if (mysqli_stmt_execute($stmt)) {
             $mail->Subject = 'Password reset link from ANKIT';
-            $mail->Body = '<p>We received a request from you to reset your password. Click the link below:</p>' .
-                          "<a href='http://localhost/E-LIBRARY/reset-password.php?email=$email&reset_token=$reset_token'>Reset Password</a>";
+            $mail->Body = '<p>We received a request from you to reset your password. Click the link below:</p>
+           <a href="http://localhost/E-LIBRARY/reset-password.php?email=' . urlencode($email) . '&reset_token=' . urlencode($reset_token) . '">Reset Password</a>';
+
             $mail->send();
             return true;
         } else {
@@ -45,14 +51,14 @@ function sendMail($con, $email, $reset_token)
 if (isset($_POST['send-reset-link'])) {
     $email = mysqli_real_escape_string($con, $_POST['email']);
 
-    $query = "SELECT * FROM `users` WHERE `email` = '$email'";
-    $result = mysqli_query($con, $query);
+    $query = "SELECT * FROM `users` WHERE `email` = ?";
+    $stmt = mysqli_prepare($con, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
     if ($result && mysqli_num_rows($result) == 1) {
-        $reset_token = bin2hex(random_bytes(32));
-        date_default_timezone_set('Asia/Kolkata');
-        $date = date("Y-m-d H:i:s");
-        $query = "UPDATE `users` SET `resettoken`='$reset_token', `resettokenexpire`='$date' WHERE `email`='$email'";
-        if (mysqli_query($con, $query) && sendMail($con, $email, $reset_token)) {
+        if (sendMail($con, $email)) {
             echo "
             <script>
             alert('Password reset link sent to mail');

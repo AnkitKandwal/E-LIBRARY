@@ -50,7 +50,12 @@ if (mysqli_num_rows($result) > 0) {
                         <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn ms-2 text-white" style="background-color: red;">Delete</a>
                     </li>
                <?php } ?>
-                </ul>
+               <li class="nav-item ">
+                      
+                         <a href="booklisting.php"><button class="btn ms-2 text-white" style="background-color:green;">Back</button>
+                         </a>
+                     </li>
+                </ul>           
             </div>
         </div>
     </nav>
